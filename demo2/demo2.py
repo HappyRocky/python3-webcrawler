@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from urllib.request import urlopen
 from urllib.error import HTTPError
+from urllib.request import urlopen
+
 from bs4 import BeautifulSoup
+
 
 def getTitle(url):
     try:

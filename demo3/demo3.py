@@ -2,7 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 from urllib.request import urlopen
+
 from bs4 import BeautifulSoup
+
 html = urlopen("https://www.zhihu.com/explore")
 bsObj = BeautifulSoup(html, 'lxml')
 bsList = bsObj.findAll("", {"class":"explore-feed feed-item"})

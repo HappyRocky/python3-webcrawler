@@ -1,8 +1,5 @@
-from scrapy.selector import Selector
 from scrapy import Spider
-import scrapy
-import re
-import json
+
 
 class ProxiesSpider(Spider):
     name="proxies"

@@ -5,8 +5,9 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import time
+
 from scrapy import signals
-import time,os
 
 
 class ZhihuspiderSpiderMiddleware(object):

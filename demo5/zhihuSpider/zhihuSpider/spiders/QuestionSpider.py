@@ -1,9 +1,10 @@
-from scrapy.selector import Selector
-from scrapy import Spider
-import scrapy
-import re
 import json
+import re
+
+import scrapy
+from scrapy import Spider
 from zhihuSpider.items import Question, Answer, Author
+
 
 class QuestionSpider(Spider):
     name="question"

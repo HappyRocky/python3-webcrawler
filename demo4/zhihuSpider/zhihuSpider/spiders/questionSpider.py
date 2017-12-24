@@ -1,8 +1,9 @@
-from scrapy.selector import Selector
-from scrapy import Spider
-import scrapy
 import re
+
+import scrapy
+from scrapy import Spider
 from zhihuSpider.items import Question
+
 
 class QuestionSpider(Spider):
     name="question"

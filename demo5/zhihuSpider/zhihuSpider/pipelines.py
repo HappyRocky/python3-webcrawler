@@ -5,9 +5,12 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import csv
-import os,sys
+import os
 import sqlite3
+import sys
+
 from zhihuSpider.items import Question, Answer, Author
+
 
 class ZhihuspiderWriteToCSVPipeline(object):
 
