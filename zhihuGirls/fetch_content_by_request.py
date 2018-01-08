@@ -1,13 +1,40 @@
 from urllib import parse,request
 import json
 import http.cookiejar
+import gzip
+from gzip import GzipFile
+from io import StringIO
+import zlib
 
-min_time = "1515344712"
+# 从response中根据encoding解压gzip或deflate，返回可以使用的主体
+def getValidData(res):
+    content = res.read()
+    encoding = res.info().get('Content-Encoding')
+    if encoding == 'gzip':
+        content = handle_gzip(content)
+    elif encoding == 'deflate':
+        content = handle_deflate(content)
+    return content
+
+# 处理gzip格式的响应
+def handle_gzip(data):
+    data = gzip.decompress(data)
+    return data
+
+# 处理deflate格式的响应
+def handle_deflate(data):
+    try:
+        return zlib.decompress(data, -zlib.MAX_WBITS)
+    except zlib.error:
+        return zlib.decompress(data)
+
+min_time = "1515427802"
 img_path = "F:/myPython/images/images_neihanduanzi/"
 referer = "http://m.neihanshequ.com/category/109/"
 header = {
 "Accept":"*/*",
-# "Accept-Encoding":"gzip, deflate, sdch",
+#"Accept-Encoding":"gzip, deflate, sdch",
+"Accept-Encoding":"gzip",
 "Accept-Language":"zh-CN,zh;q=0.8",
 "Connection":"keep-alive",
 "Referer":referer,
@@ -17,18 +44,15 @@ header = {
 cj = http.cookiejar.CookieJar()
 opener = request.build_opener(request.HTTPCookieProcessor(cj))
 img_name_set = set() # 存放名称，防止重复
-for i in range(10):
+for i in range(1):
     print('request ',i)
     url = referer + "?is_json=1&app_name=neihanshequ_web&min_time=" + min_time + "&csrfmiddlewaretoken=5e957b257802bb515f9ff7ca07d51c89"
     req = request.Request(url=url,headers=header)
     # res = request.urlopen(req) # 这样不会带cookie
     res = opener.open(req)
-    res = res.read()
-    try:
-        res = res.decode(encoding='utf-8')
-    except:
-        print("res=",res)
-    res_json = json.loads(res)
+    content = getValidData(res)
+    content = content.decode(encoding='utf-8')
+    res_json = json.loads(content)
     min_time = str(res_json['data']['min_time'])
     list = res_json['data']['data']
     for item in list:
